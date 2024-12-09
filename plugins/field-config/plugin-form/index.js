@@ -1,6 +1,9 @@
 import {
+  validFaqFields,
   validFieldsCacheKey,
+  validLeadFields,
   validSourceFields,
+  validTitleFields,
 } from '../../../common/valid-fields.js';
 import { getCachedElement } from '../../../common/plugin-element-cache.js';
 import i18n from 'i18next';
@@ -23,9 +26,10 @@ export const handlePluginFormConfig = ({ name, config, formik }) => {
 
   if (index == null || !type) return;
   const ctd = formik.values.surferSeoAnalyzer[index].content_type;
-  const { sourceFields } = getCachedElement(validFieldsCacheKey);
+  const { titleFields, leadFields, sourceFields, faqFields } =
+    getCachedElement(validFieldsCacheKey);
 
-  const keysToClearOnCtdChange = ['source'];
+  const keysToClearOnCtdChange = ['title', 'lead', 'source', 'faq'];
 
   switch (type) {
     case 'content_type':
@@ -38,12 +42,39 @@ export const handlePluginFormConfig = ({ name, config, formik }) => {
         });
       };
       break;
+    case 'title':
+      insertSelectOptions(
+        config,
+        titleFields?.[ctd],
+        i18n.t('NonRequiredFieldsInCTD', {
+          types: validTitleFields.join(', '),
+        }),
+      );
+      break;
+    case 'lead':
+      insertSelectOptions(
+        config,
+        leadFields?.[ctd],
+        i18n.t('NonRequiredFieldsInCTD', {
+          types: validLeadFields.join(', '),
+        }),
+      );
+      break;
     case 'source':
       insertSelectOptions(
         config,
         sourceFields?.[ctd],
         i18n.t('NonRequiredFieldsInCTD', {
           types: validSourceFields.join(', '),
+        }),
+      );
+      break;
+    case 'faq':
+      insertSelectOptions(
+        config,
+        faqFields?.[ctd],
+        i18n.t('NonRequiredFieldsInCTD', {
+          types: validFaqFields.join(', '),
         }),
       );
       break;

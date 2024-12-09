@@ -16,7 +16,35 @@ be performed. The analysis window will be displayed in the sidebar during conten
 real-time SEO analysis of the content from the selected rich text field. This seamless integration ensures that users
 can optimize their content as they work, without needing to switch between tools
 
+> **Note**: The plugin also supports optional fields such as title, whose content will be processed as an `<h1>`.
+> lead, whose content will be analyzed as a `<p>` and FAQ, whose content will also be included in the analysis.
+
 ![](.docs/images/settings-screen.png)
+
+**The fields selected in the plugin configuration will be passed for analysis in the following format.**
+
+```html
+
+<body>
+   <h1>{{Title}}</h1>
+   <p>{{Lead}}</p>
+   {{source}}
+   
+   <h2>Frequently Asked Questions</h2>
+   <div>
+       <h3>{{question.1}}</h3>
+       <div>{{question.1}}</div>
+   </div>
+   <div>
+       <h3>{{question.2}}</h3>
+       <div>{{question.2}}</div>
+   </div>
+   {{...}}
+</body>
+```
+
+It's worth noting that if an optional field is not selected, it will not be included in the analysis. For example, if
+the title field is left empty, the `<h1>` tag **will not be sent for analysis.**
 
 ### Usage
 

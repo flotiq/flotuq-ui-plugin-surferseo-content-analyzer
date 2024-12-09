@@ -1,6 +1,11 @@
 import i18n from '../../i18n';
 import pluginInfo from '../../plugin-manifest.json';
-import { validSourceFields } from '../../common/valid-fields.js';
+import {
+  validFaqFields,
+  validLeadFields,
+  validSourceFields,
+  validTitleFields,
+} from '../../common/valid-fields.js';
 
 export const getSchema = (contentTypes) => ({
   id: pluginInfo.id,
@@ -22,11 +27,23 @@ export const getSchema = (contentTypes) => ({
               type: 'object',
               required: ['content_type', 'source'],
               properties: {
+                content_type: {
+                  type: 'string',
+                  minLength: 1,
+                },
+                title: {
+                  type: 'string',
+                  minLength: 1,
+                },
+                lead: {
+                  type: 'string',
+                  minLength: 1,
+                },
                 source: {
                   type: 'string',
                   minLength: 1,
                 },
-                content_type: {
+                faq: {
                   type: 'string',
                   minLength: 1,
                 },
@@ -44,8 +61,16 @@ export const getSchema = (contentTypes) => ({
     propertiesConfig: {
       surferSeoAnalyzer: {
         items: {
-          order: ['content_type', 'source'],
+          order: ['content_type', 'source', 'title', 'lead', 'faq'],
           propertiesConfig: {
+            content_type: {
+              label: i18n.t('ContentType'),
+              unique: false,
+              helpText: i18n.t('ContentTypeHelpText'),
+              inputType: 'select',
+              optionsWithLabels: contentTypes,
+              useOptionsWithLabels: true,
+            },
             source: {
               label: i18n.t('Source'),
               unique: false,
@@ -55,13 +80,32 @@ export const getSchema = (contentTypes) => ({
               inputType: 'select',
               options: [],
             },
-            content_type: {
-              label: i18n.t('ContentType'),
+            title: {
+              label: i18n.t('Title'),
               unique: false,
-              helpText: i18n.t('ContentTypeHelpText'),
+              helpText: i18n.t('TitleHelpText', {
+                types: validTitleFields.join(', '),
+              }),
               inputType: 'select',
-              optionsWithLabels: contentTypes,
-              useOptionsWithLabels: true,
+              options: [],
+            },
+            lead: {
+              label: i18n.t('Lead'),
+              unique: false,
+              helpText: i18n.t('LeadHelpText', {
+                types: validLeadFields.join(', '),
+              }),
+              inputType: 'select',
+              options: [],
+            },
+            faq: {
+              label: i18n.t('Faq'),
+              unique: false,
+              helpText: i18n.t('FaqHelpText', {
+                types: validFaqFields.join(', '),
+              }),
+              inputType: 'select',
+              options: [],
             },
           },
         },
@@ -80,7 +124,12 @@ const addToErrors = (errors, index, field, error) => {
   errors.surferSeoAnalyzer[index][field] = error;
 };
 
-export const getValidator = (sourceFieldKeys) => {
+export const getValidator = (
+  titleFieldsKeys,
+  leadFieldsKeys,
+  sourceFieldsKeys,
+  faqFieldsKeys,
+) => {
   return (values) => {
     const errors = {};
     values.surferSeoAnalyzer?.forEach((settings, index) => {
@@ -95,7 +144,10 @@ export const getValidator = (sourceFieldKeys) => {
       });
 
       const validTypes = [
-        { key: 'source', validFieldsKeys: sourceFieldKeys[content_type] },
+        { key: 'title', validFieldsKeys: titleFieldsKeys[content_type] },
+        { key: 'lead', validFieldsKeys: leadFieldsKeys[content_type] },
+        { key: 'source', validFieldsKeys: sourceFieldsKeys[content_type] },
+        { key: 'faq', validFieldsKeys: faqFieldsKeys[content_type] },
       ];
 
       validTypes.forEach(({ key, validFieldsKeys }) => {

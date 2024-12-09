@@ -1,9 +1,9 @@
 {
   "id": "flotiq.surferseo-content-analyzer",
-  "name": "Surferseo content analyzer plugin",
+  "name": "SurferSEO content analyzer plugin",
   "description": "Flotiq ui plugin for analyze selected fields for SEO optimization directly with SurferSEO, providing real-time content improvement suggestions.",
-  "version": "1.0.0",
-  "repository": "https://github.com/flotiq/flotuq-ui-plugin-surferseo-content-analyzer",
+  "version": "1.1.0",
+  "repository": "https://github.com/flotiq/flotiq-ui-plugin-surferseo-content-analyzer",
   "url": "https://localhost:3053/index.js",
   "permissions": []
 }

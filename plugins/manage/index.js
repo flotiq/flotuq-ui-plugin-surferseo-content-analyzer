@@ -20,14 +20,20 @@ export const handleManagePlugin = ({ plugin, contentTypes, modalInstance }) => {
     ?.filter(({ internal }) => !internal)
     ?.map(({ name, label }) => ({ value: name, label }));
 
-  const { sourceFieldsKeys } = validFields;
+  const { titleFieldsKeys, leadFieldsKeys, sourceFieldsKeys, faqFieldsKeys } =
+    validFields;
 
   configCache = {};
 
   configCache = {
     options: {
       disbaledBuildInValidation: true,
-      onValidate: getValidator(sourceFieldsKeys),
+      onValidate: getValidator(
+        titleFieldsKeys,
+        leadFieldsKeys,
+        sourceFieldsKeys,
+        faqFieldsKeys,
+      ),
     },
     schema: getSchema(ctds),
   };
